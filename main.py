@@ -24,6 +24,10 @@ class Task(BaseModel):
 class CreateTask(BaseModel):
     title: str
 
+class CreateBook(BaseModel):
+    book_name: str
+
+favorite_book = ''
 
 tasks: list[Task] = []
 
@@ -42,6 +46,7 @@ def post_task_in_list(name: CreateTask):
 
 for route in app.routes:
     print(route.path, route.methods)
+
 
 
 
