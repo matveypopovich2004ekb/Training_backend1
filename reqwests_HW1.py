@@ -20,3 +20,4 @@ def post_newbook(new_book: NewBook):
 def get_favorite_book():
     global book
     return f"Любимая книга на данный момент: {book}"
+

@@ -24,10 +24,9 @@ class Task(BaseModel):
 class CreateTask(BaseModel):
     title: str
 
-class CreateBook(BaseModel):
-    book_name: str
-
-favorite_book = ''
+class UpdateTask(BaseModel):
+    title: str | None = None
+    completed: bool | None = None
 
 tasks: list[Task] = []
 
@@ -43,9 +42,29 @@ def post_task_in_list(name: CreateTask):
     tasks.append(new_task)
     return new_task
 
+@app.patch('/tasks/{task_id}', response_model=Task, status_code=status.HTTP_200_OK)
+def putch_task_update(task_id: str, task_update: UpdateTask) -> Task:
+    global tasks
+    for t in tasks:
+        if task_id == t.id:
+            if task_update.title is not None:
+                t.title = task_update.title
+            if task_update.completed is not None:
+                t.completed = task_update.completed
+            return t
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Задача не найдена!")
 
-for route in app.routes:
-    print(route.path, route.methods)
+@app.delete('/tasks/{task_id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_task(task_id: str) -> None:
+    for t in tasks:
+        if t.id == task_id:
+            tasks.remove(t)
+            return
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Брат задача не найдена брат:( брат")
+
+
+
+
 
 
 
