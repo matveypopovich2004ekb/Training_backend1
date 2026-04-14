@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException, status
 from uuid import uuid4
 
-from unicodedata import category
+
 
 the_app = FastAPI()
 
