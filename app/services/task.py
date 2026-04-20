@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.repositories.task import TaskRepository
@@ -26,6 +27,10 @@ class TaskService:
 
     def update_task(self, task_id: str, payload: TaskUpdate) -> TaskRead:
         task = self.repository.get_by_id(task_id)
+        if task is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="This task is not found"
+            )
 
         if payload.title is not None:
             task.title = payload.title
@@ -37,6 +42,10 @@ class TaskService:
 
     def delete_task(self, task_id: str) -> None:
         task = self.repository.get_by_id(task_id)
+        if task is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="This task is not found"
+            )
 
         self.repository.delete(task)
         self.db.commit()

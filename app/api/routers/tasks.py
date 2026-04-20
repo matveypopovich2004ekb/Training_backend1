@@ -4,7 +4,6 @@ from app.api.dependencies import get_task_service
 from app.schemas.task import TaskCreate, TaskRead, TaskUpdate
 from app.services.task import TaskNotFoundError, TaskService
 
-
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
@@ -34,7 +33,6 @@ def update_task(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Задача не найдена",
         )
-
 
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
