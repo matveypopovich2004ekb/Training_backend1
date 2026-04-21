@@ -1,4 +1,3 @@
-from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.repositories.categories import CategoryRepository
@@ -34,10 +33,7 @@ class CategoryService:
     ) -> CategoryRead:
         categ = self.repository.get_by_id(category_id=category_id)
         if categ is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="this category is not found",
-            )
+            raise CategoryNotFountError
 
         categ.name = payload.name if payload.name is not None else categ.name
 
@@ -47,10 +43,7 @@ class CategoryService:
     def delete_category(self, category_id: str) -> None:
         categ = self.repository.get_by_id(category_id=category_id)
         if categ is None:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="this category is not found",
-            )
+            raise CategoryNotFountError
 
         self.repository.delete(categ)
 
